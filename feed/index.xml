@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Polynex</title>
+	<atom:link href="https://polynex.in/feed/" rel="self" type="application/rss+xml" />
+	<link>https://polynex.in</link>
+	<description>Design &#38; Develop sophisticated Aircraft Components</description>
+	<lastBuildDate>Mon, 10 Jan 2022 09:46:26 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=5.8.3</generator>
+
+<image>
+	<url>https://polynex.in/wp-content/uploads/2021/11/cropped-logo-site-32x32.jpg</url>
+	<title>Polynex</title>
+	<link>https://polynex.in</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+</channel>
+</rss>

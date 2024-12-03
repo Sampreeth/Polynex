@@ -1,0 +1,19 @@
+
+# .htaccess main domain to subfolder redirect
+# Copy and paste the following code into the .htaccess file
+# in the public_html folder of your hosting account
+# make the changes to the file according to the instructions.
+  
+# Do not change this line.
+  
+# Change yourdomain.com to be your main domain.
+  
+# Change 'subfolder' to be the folder you will use for your main domain.
+  
+# Don't change this line.
+  
+# Change 'subfolder' to be the folder you will use for your main domain.
+  
+# Change yourdomain.com to be your main domain again.
+# Change 'subfolder' to be the folder you will use for your main domain
+# followed by / then the main file for your site, index.php, index.html, etc.
