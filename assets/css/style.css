@@ -1546,3 +1546,15 @@ footer.site-footer {
   0% { transform: scale(0.6); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
 }
+
+/* Certificate image hover overlay effects */
+.certificate-item:hover .cert-overlay {
+  opacity: 1 !important;
+}
+.certificate-item:hover .certificate-img-wrap img {
+  transform: scale(1.03);
+  filter: brightness(0.9);
+}
+.certificate-img-wrap img {
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
