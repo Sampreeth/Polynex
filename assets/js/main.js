@@ -482,26 +482,177 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 11. Lazy Loading initialization
-  // Select all image elements that should be lazyloaded
-  // We add .lazy class to them dynamically if they don't have it, or let lazyload target them
-  const images = document.querySelectorAll("img:not([loading='eager'])");
-  images.forEach(img => {
-    // Skip if it is already using lazy loading or has no src
-    const src = img.getAttribute("src");
-    if (!src || img.classList.contains("lazy") || src.startsWith("data:")) return;
 
-    // Convert src to data-src for LazyLoad to intercept
-    img.setAttribute("data-src", src);
-    img.removeAttribute("src");
-    img.classList.add("lazy");
-  });
 
-  // Initialize LazyLoad instance
-  if (typeof LazyLoad !== "undefined") {
-    new LazyLoad({
-      elements_selector: ".lazy",
-      threshold: 400
+
+  // 12. Global Interactive Parts & Products Search Engine
+  const PARTS_DATABASE = [
+    { name: "Front Fuselage Assembly Jig (HJT-36 / IJT)", category: "Jigs & Fixtures", page: "/jigsfixtures/", keywords: "ijt front fuselage assembly rear jigs walkways", desc: "Front Fuselage Assembly Jigs for HJT-36 trainer aircraft, complete with access walkways." },
+    { name: "Rear Fuselage Assembly Jig (IJT)", category: "Jigs & Fixtures", page: "/jigsfixtures/", keywords: "rear fuselage assembly LSP ijt kanpur prototypes", desc: "Rear fuselage assembly jigs commissioned at TAD Kanpur for HJT-36 LSP programs." },
+    { name: "Centre Fuselage Assembly Jig (LCA Tejas)", category: "Jigs & Fixtures", page: "/jigsfixtures/", keywords: "lca tejas center centre fuselage assembly jig hal ardc", desc: "LCA Tejas Centre Fuselage Assembly Jig commissioned at HAL ARDC Bangalore." },
+    { name: "Front Fuselage Assembly Jig (LCA Training)", category: "Jigs & Fixtures", page: "/jigsfixtures/", keywords: "lca trainer training front fuselage assembly jig walkways", desc: "LCA training aircraft front fuselage assembly jigs with walkways." },
+    { name: "Fin Assembly Jig (LCA)", category: "Jigs & Fixtures", page: "/jigsfixtures/", keywords: "fin assembly jig lca project group sub-assembly", desc: "Fin Assembly Jigs and sub-assembly jigs built for LCA production." },
+    { name: "Wind Shield Fixture (ALH / Advanced Light Helicopter)", category: "Jigs & Fixtures", page: "/jigsfixtures/", keywords: "alh advanced light helicopter windshield wind shield fixture", desc: "Windshield tooling fixture for the Advanced Light Helicopter program." },
+    { name: "Main Rotor Drill Jig (ALH / Helicopter)", category: "Jigs & Fixtures", page: "/jigsfixtures/", keywords: "main rotor blade drill jig alh helicopter structural drilling", desc: "Precision structural drill jig for ALH Main Rotor Blades." },
+    { name: "Tail Rotor Drill Jig (ALH / Helicopter)", category: "Jigs & Fixtures", page: "/jigsfixtures/", keywords: "tail rotor blade drill jig alh helicopter precision drilling", desc: "Tail rotor blade precision drill jig built for ALH program." },
+    { name: "Master Tool Gauge for Flap (LCA)", category: "Jigs & Fixtures", page: "/jigsfixtures/", keywords: "master tool gauge flap lca wing flaps precision templates", desc: "Master tool gauges for wing flaps on the Light Combat Aircraft." },
+    { name: "Master Tool Gauge for Slats (LCA)", category: "Jigs & Fixtures", page: "/jigsfixtures/", keywords: "master tool gauge slats lca wing slats edge templates", desc: "Slats edge master tool gauges built for LCA wing assembly." },
+    { name: "Windshield Glass Checking Fixture", category: "Jigs & Fixtures", page: "/jigsfixtures/", keywords: "windshield glass checking fixture verification templates templates", desc: "Inspection and verification fixtures for windshield glass panels." },
+    { name: "Aviation Oil Cooler (CEMILAC Approved)", category: "CEMILAC Approved", page: "/cemilac-approved-components/", keywords: "oil cooler flight certified heat exchanger cooling", desc: "Flight-certified oil coolers engineered to meet extreme thermal dynamics." },
+    { name: "High-Pressure Hydraulic Valves", category: "CEMILAC Approved", page: "/cemilac-approved-components/", keywords: "high pressure hydraulic valves pneumatic flow control valves", desc: "Pneumatic and hydraulic control valves certified for onboard flight systems." },
+    { name: "Speed Sensors & Subsystems", category: "CEMILAC Approved", page: "/cemilac-approved-components/", keywords: "speed sensors transmission digital electronics sensor", desc: "CEMILAC approved speed sensors and transmission electronics for engines." },
+    { name: "Canopy Proof Pressure Test Rig", category: "Test Rigs", page: "/test-rigs/", keywords: "canopy proof pressure test rig testing cockpit seals", desc: "Cockpit canopy sealing and proof pressure testing structure for fighter jets." },
+    { name: "Oil Cooler Performance Test Rig", category: "Test Rigs", page: "/test-rigs/", keywords: "oil cooler performance test rig thermal flow sensors", desc: "High-pressure thermal and flow performance calibration test rig." },
+    { name: "Actuator Performance Test Rig", category: "Test Rigs", page: "/test-rigs/", keywords: "actuator performance test rig hydraulic stroke sensors", desc: "Dynamic stroke and force test rig for aircraft landing gear actuators." },
+    { name: "Oil Pump Testing Rig", category: "Test Rigs", page: "/test-rigs/", keywords: "oil pump testing rig engines pressure flow calibrators", desc: "Engine lubrication system oil pump testing and flow calibrators." },
+    { name: "Canopy Operation Rig", category: "Test Rigs", page: "/test-rigs/", keywords: "canopy operation rig actuator open close cycles", desc: "Lifecycle testing rig simulating open/close operations of cockpit canopies." },
+    { name: "Stiffness Proof Load Test Rig (LCA Fin)", category: "Test Rigs", page: "/test-rigs/", keywords: "stiffness proof load test rig lca fin tail stabilizer structural", desc: "Structural stiffness and stress analysis load rig for LCA stabilizers." },
+    { name: "Engine Handling Trolley", category: "Ground Support", page: "/ground-handling-rigs/", keywords: "engine handling trolley mobile support engine stand", desc: "Heavy-duty mobile engine handling trolley for airfield maintenance." },
+    { name: "Aircraft Tow Bar", category: "Ground Support", page: "/ground-handling-rigs/", keywords: "aircraft tow bar pushback tug attachments wheels", desc: "Reinforced tow bars engineered for safe hangar pushback operations." },
+    { name: "Mobile Maintenance Stands", category: "Ground Support", page: "/ground-handling-rigs/", keywords: "mobile maintenance support stands height adjustable gantries", desc: "Adjustable maintenance platforms and gantries for aircraft access." }
+  ];
+
+  function buildSearchModal() {
+    const trigger = document.getElementById("global-search-trigger");
+    if (!trigger) return;
+
+    const searchModal = document.createElement("div");
+    searchModal.id = "global-search-modal";
+    searchModal.style.cssText = `
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 13, 25, 0.96);
+      backdrop-filter: blur(12px);
+      z-index: 100000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 60px 20px;
+    `;
+
+    searchModal.innerHTML = `
+      <div class="search-panel-container glass-panel" style="width: 100%; max-width: 650px; padding: 32px; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); display: flex; flex-direction: column; gap: 24px; position: relative;">
+        <button id="search-modal-close" style="position: absolute; right: 20px; top: 20px; background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.3rem; transition: color 0.3s;"><i class="fas fa-times"></i></button>
+        <div>
+          <h3 style="font-family: var(--font-heading); color: var(--gold); font-size: 1.35rem; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;"><i class="fas fa-search"></i> Interactive Parts Lookup</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Query our inventory database of AS9100/CEMILAC certified aircraft components, fixtures, and jigs.</p>
+        </div>
+        <input type="text" id="global-search-input" class="form-control" placeholder="Type to search... (e.g. LCA, valve, fixture, HJT)" style="font-size: 1.05rem; padding: 16px 20px; border-radius: 30px; background: var(--bg-deep); border: 1px solid var(--border);" autocomplete="off">
+        <div id="global-search-results" style="max-height: 380px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding-right: 8px;">
+          <div style="text-align: center; padding: 40px 20px; color: var(--text-faint);">
+            <i class="fas fa-plane-departure" style="font-size: 2.2rem; color: var(--border); margin-bottom: 12px; display: block;"></i>
+            Type a part name or program to query specifications...
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(searchModal);
+
+    const closeBtn = document.getElementById("search-modal-close");
+    const input = document.getElementById("global-search-input");
+    const resultsBox = document.getElementById("global-search-results");
+
+    trigger.addEventListener("click", (e) => {
+      e.preventDefault();
+      searchModal.style.visibility = "visible";
+      searchModal.style.opacity = "1";
+      setTimeout(() => input.focus(), 250);
+    });
+
+    function closeModal() {
+      searchModal.style.opacity = "0";
+      setTimeout(() => {
+        searchModal.style.visibility = "hidden";
+        resultsBox.innerHTML = `
+          <div style="text-align: center; padding: 40px 20px; color: var(--text-faint);">
+            <i class="fas fa-plane-departure" style="font-size: 2.2rem; color: var(--border); margin-bottom: 12px; display: block;"></i>
+            Type a part name or program to query specifications...
+          </div>
+        `;
+        input.value = "";
+      }, 350);
+    }
+
+    closeBtn.addEventListener("click", closeModal);
+    searchModal.addEventListener("click", (e) => {
+      if (e.target === searchModal) closeModal();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && searchModal.style.opacity === "1") closeModal();
+    });
+
+    input.addEventListener("input", (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      if (!q) {
+        resultsBox.innerHTML = `
+          <div style="text-align: center; padding: 40px 20px; color: var(--text-faint);">
+            <i class="fas fa-plane-departure" style="font-size: 2.2rem; color: var(--border); margin-bottom: 12px; display: block;"></i>
+            Type a part name or program to query specifications...
+          </div>
+        `;
+        return;
+      }
+
+      const matches = PARTS_DATABASE.filter(part => {
+        return part.name.toLowerCase().includes(q) || 
+               part.category.toLowerCase().includes(q) || 
+               part.keywords.toLowerCase().includes(q) || 
+               part.desc.toLowerCase().includes(q);
+      });
+
+      if (matches.length === 0) {
+        resultsBox.innerHTML = `
+          <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: var(--gold); margin-bottom: 12px; display: block;"></i>
+            No parts matching "${e.target.value}" found in our inventory database.
+          </div>
+        `;
+        return;
+      }
+
+      resultsBox.innerHTML = "";
+      matches.forEach(part => {
+        const itemDiv = document.createElement("a");
+        itemDiv.href = part.page;
+        itemDiv.style.cssText = `
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          padding: 18px;
+          background: rgba(255,255,255,0.02);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-sm);
+          text-decoration: none;
+          transition: border-color 0.3s, background 0.3s;
+        `;
+        itemDiv.addEventListener("mouseenter", () => {
+          itemDiv.style.borderColor = "var(--gold)";
+          itemDiv.style.background = "rgba(201, 169, 110, 0.05)";
+        });
+        itemDiv.addEventListener("mouseleave", () => {
+          itemDiv.style.borderColor = "var(--border)";
+          itemDiv.style.background = "rgba(255,255,255,0.02)";
+        });
+
+        itemDiv.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="color: var(--text-primary); font-size: 0.95rem;">${part.name}</strong>
+            <span style="font-size:0.65rem; font-family:var(--font-heading); color:var(--gold); border:1px solid rgba(201,169,110,0.3); padding:3px 8px; border-radius:10px; text-transform:uppercase; letter-spacing:0.05em;">${part.category}</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-body); margin: 0; line-height: 1.4;">${part.desc}</p>
+          <span style="font-size: 0.72rem; color: var(--gold); align-self: flex-start; margin-top: 4px; display:flex; align-items:center; gap:4px;">
+            Go to Specifications Page <i class="fas fa-arrow-right" style="font-size: 0.65rem;"></i>
+          </span>
+        `;
+        resultsBox.appendChild(itemDiv);
+      });
     });
   }
+
+  buildSearchModal();
 });
