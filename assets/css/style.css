@@ -1522,3 +1522,27 @@ footer.site-footer {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------------------------------------
+   FORM VALIDATION & SUCCESS MODAL
+   --------------------------------------- */
+
+.form-control.valid-field {
+  border-color: rgba(46, 204, 113, 0.45) !important;
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.05);
+}
+
+.form-control.invalid-field {
+  border-color: rgba(231, 76, 60, 0.55) !important;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.05);
+  background: rgba(231, 76, 60, 0.02);
+}
+
+#scroll-top-btn:hover {
+  transform: translateY(-4px) scale(1.05) !important;
+}
+
+@keyframes scaleUp {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
