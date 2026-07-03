@@ -101,7 +101,7 @@
      3. 3D GYROSCOPE CARD TILT
   ------------------------------------------------------- */
   function initGyroscopeCards() {
-    const cards = document.querySelectorAll('.glass-panel');
+    const cards = Array.from(document.querySelectorAll('.glass-panel')).filter(c => !c.closest('#global-search-modal'));
     if (!cards.length) return;
 
     const MAX_TILT = 8;
