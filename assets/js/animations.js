@@ -412,11 +412,11 @@
       });
 
       // Schedule next flyover: 12–28 seconds gap
-      setTimeout(spawnFlight, 12000 + Math.random() * 16000);
+      setTimeout(spawnFlight, 45000 + Math.random() * 35000);
     }
 
     // First flight: 2–6 seconds after page load
-    setTimeout(spawnFlight, 2000 + Math.random() * 4000);
+    setTimeout(spawnFlight, 15000 + Math.random() * 15000);
   }
 
 
