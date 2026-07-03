@@ -92,9 +92,9 @@
   </script>
 
   <!-- FontAwesome -->
-  <link rel="stylesheet" href="/wp-content/themes/oceanwp/assets/fonts/fontawesome/css/all.min.css?v=5">
+  <link rel="stylesheet" href="/wp-content/themes/oceanwp/assets/fonts/fontawesome/css/all.min.css?v=9">
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=5">
+  <link rel="stylesheet" href="/assets/css/style.css?v=9">
 </head>
 <body>
   <!-- Site Header -->
@@ -138,8 +138,7 @@
 
   <main id="main-content">
   <!-- Hero Section -->
-  <section class="hero" style="background-image: url('wp-content/uploads/2021/12/Slide-1.jpg');">
-    <div class="hero-overlay"></div>
+  <section class="hero" style="background-image: url('wp-content/uploads/2021/12/Slide-1.jpg');">    <div class="hero-overlay"></div>
     <div class="container hero-content">
       <h3 class="hero-subtitle">Pioneers in Aviation, Design, Development</h3>
       <h1 class="hero-title">Engineering The Sky</h1>
@@ -295,19 +294,20 @@
     </div>
   </section>
 
-  <!-- Clients Grid -->
-  <section class="services-section section-padding">
-    <div class="container">
+  <!-- Clients Grid / Radar Section -->
+  <section class="radar-section services-section section-padding" id="clients">
+    <canvas id="radar-canvas" aria-hidden="true"></canvas>
+    <div class="container" style="position:relative;z-index:2;">
       <div class="section-header reveal">
         <h2>Our Clients</h2>
         <p>Proudly manufacturing precision aircraft components for major defence and research institutions.</p>
       </div>
-      <div class="clients-grid reveal-stagger">
-        <img src="wp-content/uploads/2021/11/gtre-drdo.png" alt="DRDO GTRE" class="client-logo">
-        <img src="wp-content/uploads/2022/01/Badge_of_the_Indian_Air_Force.svg.png" alt="Indian Air Force" class="client-logo">
-        <img src="wp-content/uploads/2022/01/1200px-ADGPI_Indian_Army.svg.png" alt="Indian Army" class="client-logo">
-        <img src="wp-content/uploads/2021/11/1200px-Hindustan_Aeronautics_Limited_Logo.svg.png" alt="HAL" class="client-logo">
-        <img src="wp-content/uploads/2021/11/1059px-Indian_Space_Research_Organisation_Logo.svg.png" alt="ISRO" class="client-logo">
+      <div class="clients-grid" id="clients-grid">
+        <img src="wp-content/uploads/2021/11/gtre-drdo.png"                                         alt="DRDO GTRE"      class="client-logo" data-ping>
+        <img src="wp-content/uploads/2022/01/Badge_of_the_Indian_Air_Force.svg.png"                alt="Indian Air Force" class="client-logo" data-ping>
+        <img src="wp-content/uploads/2022/01/1200px-ADGPI_Indian_Army.svg.png"                     alt="Indian Army"    class="client-logo" data-ping>
+        <img src="wp-content/uploads/2021/11/1200px-Hindustan_Aeronautics_Limited_Logo.svg.png"    alt="HAL"            class="client-logo" data-ping>
+        <img src="wp-content/uploads/2021/11/1059px-Indian_Space_Research_Organisation_Logo.svg.png" alt="ISRO"         class="client-logo" data-ping>
       </div>
     </div>
   </section>
@@ -435,5 +435,7 @@
 
   <!-- Custom Main Javascript -->
   <script src="assets/js/main.js"></script>
+  <!-- Animations: Contrail, Odometer, Gyroscope -->
+  <script src="assets/js/animations.js?v=9"></script>
 </body>
 </html>
