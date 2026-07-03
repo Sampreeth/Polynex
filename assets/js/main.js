@@ -481,4 +481,27 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
+
+  // 11. Lazy Loading initialization
+  // Select all image elements that should be lazyloaded
+  // We add .lazy class to them dynamically if they don't have it, or let lazyload target them
+  const images = document.querySelectorAll("img:not([loading='eager'])");
+  images.forEach(img => {
+    // Skip if it is already using lazy loading or has no src
+    const src = img.getAttribute("src");
+    if (!src || img.classList.contains("lazy") || src.startsWith("data:")) return;
+
+    // Convert src to data-src for LazyLoad to intercept
+    img.setAttribute("data-src", src);
+    img.removeAttribute("src");
+    img.classList.add("lazy");
+  });
+
+  // Initialize LazyLoad instance
+  if (typeof LazyLoad !== "undefined") {
+    new LazyLoad({
+      elements_selector: ".lazy",
+      threshold: 400
+    });
+  }
 });
