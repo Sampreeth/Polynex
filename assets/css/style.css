@@ -75,6 +75,7 @@ html {
   scroll-behavior: smooth;
   background-color: var(--bg-deep);
   font-size: 16px;
+  zoom: 85%;
 }
 
 body {

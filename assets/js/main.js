@@ -147,4 +147,44 @@ document.addEventListener("DOMContentLoaded", () => {
       openLightbox(target.src, target.alt);
     }
   });
+
+  // 6. Dynamic Header Navigation Highlighting
+  const currentPath = window.location.pathname;
+  const navLinks = document.querySelectorAll("nav.main-nav ul li a");
+  
+  // Clear any statically hardcoded active classes first
+  document.querySelectorAll("nav.main-nav ul li").forEach(li => {
+    li.classList.remove("active");
+  });
+
+  let matched = false;
+  
+  // Check exact/sub-path matching
+  navLinks.forEach(link => {
+    const href = link.getAttribute("href");
+    if (!href) return;
+    
+    // Check if the current page path ends with or matches the link href
+    // We handle absolute/relative and trailing slashes
+    const normHref = href.replace(/\/$/, "");
+    const normPath = currentPath.replace(/\/$/, "");
+    
+    if (normHref && normPath === normHref) {
+      // Set active on parent li
+      link.parentElement.classList.add("active");
+      
+      // If it is inside a dropdown, also highlight the parent has-dropdown li
+      const parentDropdown = link.closest(".has-dropdown");
+      if (parentDropdown) {
+        parentDropdown.classList.add("active");
+      }
+      matched = true;
+    }
+  });
+
+  // Fallback: If no subpage matched and path is empty/root, highlight Home
+  if (!matched || currentPath === "/" || currentPath === "/index.html") {
+    const homeLi = document.querySelector("nav.main-nav ul li:first-child");
+    if (homeLi) homeLi.classList.add("active");
+  }
 });
